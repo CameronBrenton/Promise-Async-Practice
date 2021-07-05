@@ -27,6 +27,15 @@ const readFileWrappedInPromise = (filePath) => {
 	});
 };
 
+/**
+ *          Promise
+ *             |
+ *          Pending (undefined)
+ *          /      \
+ *     Resolved    Rejected ("throw" err)
+ * (use returned data)
+ */
+
 readFileWrappedInPromise(filePath)
 .then(data => {
 	console.log('5a) received the data inside the .then')
