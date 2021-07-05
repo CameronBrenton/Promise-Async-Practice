@@ -39,3 +39,55 @@ readFileWrappedInPromise(filePath)
 .finally( () => {
 	console.log('Finished read file operation');
 });
+
+/* Approach 2: convert async code to a Promise using util.promisify */
+const readFilePromisified = util.promisify(fs.readFile);
+
+readFilePromisified(filePath, "UTF-8")
+.then(data => {
+	console.log("[1] Printing the data");
+	console.log(data.substr(0, 10))
+})
+.catch(error => {
+	console.log("[2] Handling the error");
+	console.lerror(error);
+});
+
+const promise1 = readFilePromisified(filePath, "UTF-8");
+
+const fileName2 = "mb_5";
+const filePath2 = path.resolve(__dirname, fileName2);
+const promise2 = readFilePromisified(filePath2, "UTF-8");
+
+const fileName3 = "mb_500";
+const filePath3 = path.resolve(__dirname, fileName3);
+const promise3 = readFilePromisified(filePath3, "UTF-8");
+
+const fileName4 = "kb_5";
+const filePath4 = path.resolve(__dirname, fileName4);
+const promise4 = readFilePromisified(filePath4, "UTF-8");
+
+const fileName5 = "kb_50";
+const filePath5 = path.resolve(__dirname, fileName5);
+const promise5 = readFilePromisified(filePath5, "UTF-8");
+
+/* Testing Promise.all vs Promise.race */
+
+const allPromises = Promise.all = Promise.all([promise1, promise2, promise3, promise4, promise5]);
+
+allPromises
+.then(results => {
+	console.log("<1> Printing the data");
+
+	for (const result of results) {
+		console.log(result.substr(0, 10));
+	}
+})
+.catch(error => {
+	console.log("<2> Handling the error");
+
+	console.log(error);
+})
+.finally(() => {
+	console.log("Finished!");
+});
